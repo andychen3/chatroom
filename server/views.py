@@ -1,13 +1,12 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import Server, Category
-from .serializer import ServerSerializer, CategorySerializer
-from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError, AuthenticationFailed
 from django.db.models import Count
-from .schema import server_list_docs
-from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
+from rest_framework import viewsets
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
+from rest_framework.response import Response
+
+from .models import Category, Server
+from .schema import server_list_docs
+from .serializer import CategorySerializer, ServerSerializer
 
 
 class CategoryListViewSet(viewsets.ViewSet):
@@ -20,7 +19,6 @@ class CategoryListViewSet(viewsets.ViewSet):
 
 
 class ServerListViewSet(viewsets.ViewSet):
-
     queryset = Server.objects.all()
     # permission_classes = [IsAuthenticated]
 
@@ -48,6 +46,7 @@ class ServerListViewSet(viewsets.ViewSet):
         if by_serverid:
             # if not request.user.is_authenticated:
             #     raise AuthenticationFailed()
+
             try:
                 self.queryset = self.queryset.filter(id=by_serverid)
                 if not self.queryset.exists():
@@ -55,7 +54,7 @@ class ServerListViewSet(viewsets.ViewSet):
                         detail=f"Server with id {by_serverid} not found"
                     )
             except ValueError:
-                raise ValidationError(detail=f"Server value error")
+                raise ValidationError(detail="Server value error")
 
         if qty:
             self.queryset = self.queryset[: int(qty)]
