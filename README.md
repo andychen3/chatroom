@@ -8,7 +8,7 @@ Lessons:
 ------------------------------------------------------------------------------------------
 This application was created to learn more about Web Sockets, Typescript, Django, Django rest framework, channels, simple authentication, and JWT.
 
-------------------------------------------------------------------------------------------
+
 Screenshots:
 ------------------------------------------------------------------------------------------
 Front Page:
